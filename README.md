@@ -107,8 +107,8 @@ php artisan storage:link
 - マイページ（出品履歴 / 購入履歴）
 
 ## テーブル設計
-
-※ 後ほど追記
+![テーブル1](./table1.png)
+![テーブル2](./table2.png)
 
 ## ER 図
 ![ER図](./er.png)
