@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ItemController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,3 +17,14 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/', [ItemController::class, 'index']);
+
+Route::get('/item/{item_id}', [ItemController::class, 'show'])->name('items.show');
+
+Route::post('/item/{item_id}/favorite', [ItemController::class, 'toggleFavorite'])
+    ->middleware('auth')
+    ->name('items.favorite');
+
+Route::post('/item/{item_id}/comment', [ItemController::class, 'storeComment'])
+    ->middleware('auth')
+    ->name('items.comment');
