@@ -20,6 +20,34 @@
   </span>
 @endif
 
+{{-- 購入ボタン --}}
+<div style="margin-top:12px;">
+
+@if ($item->orders_count > 0)
+    {{-- SOLD時は何も出さない（既に表示あり） --}}
+
+@elseif (Auth::check() && $item->user_id === Auth::id())
+    <div style="padding:10px; background:#f3f4f6; border-radius:6px;">
+        あなたの商品です
+    </div>
+
+@else
+    @auth
+        <a href="{{ url('/purchase/' . $item->id) }}"
+           style="display:inline-block; padding:10px 16px; background:#2563eb; color:#fff; border-radius:6px; text-decoration:none;">
+            購入する
+        </a>
+    @else
+        <a href="{{ url('/login') }}"
+           style="display:inline-block; padding:10px 16px; background:#9ca3af; color:#fff; border-radius:6px; text-decoration:none;">
+            ログインして購入
+        </a>
+    @endauth
+@endif
+
+</div>
+
+
       <div style="margin-bottom:6px;">ブランド：{{ $item->brand }}</div>
       <div style="margin-bottom:6px;">出品者：{{ $item->user->name }}</div>
       @auth
