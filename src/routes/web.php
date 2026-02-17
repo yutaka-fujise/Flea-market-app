@@ -17,7 +17,8 @@ use App\Http\Controllers\PurchaseController;
 
 Route::get('/', [ItemController::class, 'index']);
 
-Route::get('/item/{item_id}', [ItemController::class, 'show'])->name('items.show');
+Route::get('/item/{item_id}', [ItemController::class, 'show'])
+    ->name('items.show');
 
 Route::post('/item/{item_id}/favorite', [ItemController::class, 'toggleFavorite'])
     ->middleware('auth')
@@ -27,15 +28,24 @@ Route::post('/item/{item_id}/comment', [ItemController::class, 'storeComment'])
     ->middleware('auth')
     ->name('items.comment');
 
+
 Route::middleware('auth')->group(function () {
-    Route::get('/purchase/{item}', [PurchaseController::class, 'confirm'])->name('purchase.confirm');
-    Route::post('/purchase/{item}', [PurchaseController::class, 'store'])->name('purchase.store');
 
-    Route::get('/purchase/{item}/payment', [PurchaseController::class, 'editPayment'])->name('purchase.payment.edit');
-    Route::post('/purchase/{item}/payment', [PurchaseController::class, 'updatePayment'])->name('purchase.payment.update');
+    Route::get('/purchase/{item}', [PurchaseController::class, 'confirm'])
+        ->name('purchase.confirm');
+
+    Route::post('/purchase/{item}', [PurchaseController::class, 'store'])
+        ->name('purchase.store');
+
+    Route::get('/purchase/{item}/payment', [PurchaseController::class, 'editPayment'])
+        ->name('purchase.payment.edit');
+
+    Route::post('/purchase/{item}/payment', [PurchaseController::class, 'updatePayment'])
+        ->name('purchase.payment.update');
+
     Route::get('/purchase/address/{item}', [PurchaseController::class, 'editAddress'])
-    ->name('purchase.address.edit');
+        ->name('purchase.address.edit');
 
-Route::post('/purchase/address/{item}', [PurchaseController::class, 'updateAddress'])
-    ->name('purchase.address.update');
+    Route::post('/purchase/address/{item}', [PurchaseController::class, 'updateAddress'])
+        ->name('purchase.address.update');
 });
