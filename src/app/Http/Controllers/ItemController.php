@@ -7,6 +7,9 @@ use App\Models\Item;
 use App\Models\Favorite;
 use App\Models\Comment;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Category;
+use App\Models\Condition;
+use Illuminate\Support\Facades\Storage;
 
 class ItemController extends Controller
 {
@@ -99,4 +102,40 @@ class ItemController extends Controller
 
         return back();
     }
+
+    public function create()
+{
+    $categories = Category::all();
+    $conditions = Condition::all();
+
+    return view('items.sell', compact('categories', 'conditions'));
+}
+
+public function store(Request $request)
+{
+    $validated = $request->validate([
+        'name' => ['required', 'string', 'max:255'],
+        'brand' => ['required', 'string', 'max:255'],
+        'description' => ['required', 'string'],
+        'price' => ['required', 'integer', 'min:1'],
+        'category_id' => ['required', 'exists:categories,id'],
+        'condition_id' => ['required', 'exists:conditions,id'],
+        'image' => ['required', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
+    ]);
+
+    $imagePath = $request->file('image')->store('items', 'public');
+
+    Item::create([
+        'name' => $validated['name'],
+        'brand' => $validated['brand'],
+        'description' => $validated['description'],
+        'price' => $validated['price'],
+        'category_id' => $validated['category_id'],
+        'condition_id' => $validated['condition_id'],
+        'image' => $imagePath,
+        'user_id' => Auth::id(),
+    ]);
+
+    return redirect()->route('mypage', ['page' => 'sell']);
+}
 }

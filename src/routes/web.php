@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\MypageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,4 +49,17 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/purchase/address/{item}', [PurchaseController::class, 'updateAddress'])
         ->name('purchase.address.update');
+
+    Route::get('/mypage', [MypageController::class, 'index'])
+        ->name('mypage');
+
+    Route::get('/mypage/profile', [MypageController::class, 'editProfile'])
+        ->name('mypage.profile.edit');
+
+    Route::post('/mypage/profile', [MypageController::class, 'updateProfile'])
+        ->name('mypage.profile.update');
+
+    Route::get('/sell', [ItemController::class, 'create'])->name('sell.create');
+    
+    Route::post('/sell', [ItemController::class, 'store'])->name('sell.store');
 });
