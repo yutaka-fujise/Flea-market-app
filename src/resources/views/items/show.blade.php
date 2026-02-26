@@ -1,107 +1,172 @@
-<h1>商品詳細</h1>
+@extends('layouts.app')
 
-<div style="border:1px solid #ddd; padding:16px; border-radius:8px; max-width:700px;">
-  <div style="display:flex; gap:16px;">
-    <img
-      src="{{ asset($item->image) }}"
-      alt="{{ $item->name }}"
-      style="width:220px; height:220px; object-fit:cover; border-radius:8px;"
-    >
+@section('css')
+    <link rel="stylesheet" href="{{ asset('css/show.css') }}">
+@endsection
 
-    <div>
-      <h2 style="margin:0 0 8px;">{{ $item->name }}</h2>
-      <div style="font-size:18px; font-weight:bold; margin-bottom:8px;">
-        
-        {{ number_format($item->price) }}円
-      </div>
-      @if ($item->orders_count > 0)
-  <span style="margin-left:8px; padding:4px 8px; background:#111; color:#fff; border-radius:6px; font-weight:bold;">
-    SOLD
-  </span>
-@endif
+@section('content')
 
-{{-- 購入ボタン --}}
-<div style="margin-top:12px;">
+<div class="detail page">
 
-@if ($item->orders_count > 0)
-    {{-- SOLD時は何も出さない（既に表示あり） --}}
+    <div class="detail-main">
+        {{-- 左：画像 --}}
+        <div class="detail-image">
+            <img
+                class="detail-image__img"
+                src="{{ str_starts_with($item->image, 'items/') ? asset('storage/'.$item->image) : asset($item->image) }}"
+                alt="{{ $item->name }}"
+            >
+        </div>
 
-@elseif (Auth::check() && $item->user_id === Auth::id())
-    <div style="padding:10px; background:#f3f4f6; border-radius:6px;">
-        あなたの商品です
+        {{-- 右：情報 --}}
+        <div class="detail-info">
+            <h1 class="detail-title">{{ $item->name }}</h1>
+            <p class="detail-brand">{{ $item->brand }}</p>
+
+            <p class="detail-price">
+                ¥{{ number_format($item->price) }}
+                <span class="detail-price__tax">(税込)</span>
+            </p>
+
+            <div class="detail-icons">
+
+                {{-- いいね --}}
+                <div class="detail-icon">
+                    @auth
+                        <form action="{{ route('items.favorite', ['item_id' => $item->id]) }}" method="POST">
+                            @csrf
+                            <button type="submit" class="icon-btn">
+                                <img
+                                    src="{{ asset(
+                                      $isFavorited
+                                        ? 'images/material/ハートロゴ_ピンク.png'
+                                        : 'images/material/ハートロゴ_デフォルト.png'
+                                    ) }}"
+                                    alt="favorite"
+                                    class="icon-img"
+                                >
+                            </button>
+                        </form>
+                    @else
+                        <a href="/login" class="icon-btn">
+                            <img
+                                src="{{ asset('images/material/ハートロゴ_デフォルト.png') }}"
+                                alt="favorite"
+                                class="icon-img"
+                            >
+                        </a>
+                    @endauth
+
+                    <div class="icon-count">{{ $item->favorites_count }}</div>
+                </div>
+
+                {{-- コメント --}}
+                <div class="detail-icon">
+                    <div class="icon-btn">
+                        <img
+                            src="{{ asset('images/material/ふきだしロゴ.png') }}"
+                            alt="comments"
+                            class="icon-img"
+                        >
+                    </div>
+                    <div class="icon-count">{{ $item->comments->count() }}</div>
+                </div>
+
+            </div>
+
+            {{-- SOLD表示 --}}
+            @if ($item->orders_count > 0)
+                <div class="detail-sold">SOLD</div>
+            @endif
+
+            {{-- 購入ボタン --}}
+            <div class="detail-buy">
+                @if ($item->orders_count > 0)
+                    {{-- SOLD時は何も出さない（上で表示済み） --}}
+                @elseif (Auth::check() && $item->user_id === Auth::id())
+                    <div class="detail-own">あなたの商品です</div>
+                @else
+                    @auth
+                        <a href="{{ url('/purchase/' . $item->id) }}" class="btn-primary">購入手続きへ</a>
+                    @else
+                        <a href="{{ url('/login') }}" class="btn-primary">ログインして購入</a>
+                    @endauth
+                @endif
+            </div>
+
+            {{-- 商品説明 --}}
+            <section class="detail-section">
+                <h2 class="detail-section__title">商品説明</h2>
+                <div class="detail-desc">
+                    <p class="detail-desc__meta">カラー：{{ $item->color ?? '—' }}</p>
+                    <p class="detail-desc__meta">{{ $item->condition ?? '' }}</p>
+                    <p class="detail-desc__text">{{ $item->description }}</p>
+                </div>
+            </section>
+
+            {{-- 商品の情報 --}}
+            <section class="detail-section">
+                <h2 class="detail-section__title">商品の情報</h2>
+
+                <div class="detail-table">
+                    <div class="detail-row">
+                        <div class="detail-key">カテゴリー</div>
+                        <div class="detail-val">
+                            {{-- ここはあなたの実装に合わせて --}}
+                            @if(isset($item->categories))
+                                @foreach($item->categories as $cat)
+                                    <span class="pill">{{ $cat->name }}</span>
+                                @endforeach
+                            @else
+                                <span class="pill">—</span>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="detail-row">
+                        <div class="detail-key">商品の状態</div>
+                        <div class="detail-val">
+                            <span class="pill">{{ $item->condition_name ?? ($item->condition ?? '—') }}</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {{-- コメント --}}
+            <section class="detail-section">
+                <h2 class="detail-section__title">コメント({{ $item->comments->count() }})</h2>
+
+                <div class="comments">
+                    @forelse ($item->comments as $comment)
+                        <div class="comment">
+                            <div class="comment-user">
+                                <div class="comment-avatar"></div>
+                                <div class="comment-name">{{ $comment->user->name }}</div>
+                            </div>
+                            <div class="comment-body">{{ $comment->comment }}</div>
+                        </div>
+                    @empty
+                        <p class="empty">コメントはまだありません。</p>
+                    @endforelse
+                </div>
+
+                <div class="comment-form">
+                    @auth
+                        <form action="{{ route('items.comment', ['item_id' => $item->id]) }}" method="POST">
+                            @csrf
+                            <div class="comment-form__label">商品へのコメント</div>
+                            <textarea class="comment-form__textarea" name="comment" placeholder="コメントを書く"></textarea>
+                            <button class="btn-primary btn-primary--wide" type="submit">コメントを送信する</button>
+                        </form>
+                    @else
+                        <p><a href="/login">ログインしてコメントする</a></p>
+                    @endauth
+                </div>
+            </section>
+
+        </div>
     </div>
-
-@else
-    @auth
-        <a href="{{ url('/purchase/' . $item->id) }}"
-           style="display:inline-block; padding:10px 16px; background:#2563eb; color:#fff; border-radius:6px; text-decoration:none;">
-            購入する
-        </a>
-    @else
-        <a href="{{ url('/login') }}"
-           style="display:inline-block; padding:10px 16px; background:#9ca3af; color:#fff; border-radius:6px; text-decoration:none;">
-            ログインして購入
-        </a>
-    @endauth
-@endif
 
 </div>
 
-
-      <div style="margin-bottom:6px;">ブランド：{{ $item->brand }}</div>
-      <div style="margin-bottom:6px;">出品者：{{ $item->user->name }}</div>
-      @auth
-<form action="{{ route('items.favorite', ['item_id' => $item->id]) }}" method="POST">
-    @csrf
-    <button type="submit"
-        style="border:none; background:none; font-size:18px; cursor:pointer;
-        color: {{ $isFavorited ? '#e11d48' : '#999' }};">
-        ♥ {{ $item->favorites_count }}
-    </button>
-</form>
-@else
-<a href="/login" style="color:#999; font-weight:bold;">
-    ♥ {{ $item->favorites_count }}
-</a>
-@endauth
-    </div>
-  </div>
-
-  <hr style="margin:16px 0;">
-
-  <h3>商品説明</h3>
-  <p>{{ $item->description }}</p>
-
-  <hr style="margin:16px 0;">
-
-  <h3>コメント</h3>
-@forelse ($item->comments as $comment)
-  <div style="border-top:1px solid #eee; padding:8px 0;">
-
-    <div style="font-weight:bold;">
-      {{ $comment->user->name }}
-      <span style="font-weight:normal; color:#777; font-size:12px;">
-        {{ $comment->created_at->format('Y/m/d H:i') }}
-      </span>
-    </div>
-
-    <div>{{ $comment->comment }}</div>
-
-  </div>
-@empty
-  <p>コメントはまだありません。</p>
-@endforelse
-    @auth
-<form action="{{ route('items.comment', ['item_id' => $item->id]) }}" method="POST">
-  @csrf
-  <textarea name="comment" rows="3" placeholder="コメントを書く"></textarea>
-  <button type="submit">送信</button>
-</form>
-@else
-<p><a href="/login">ログインしてコメントする</a></p>
-@endauth
-</div>
-
-<p style="margin-top:16px;">
-  <a href="/">← 一覧に戻る</a>
-</p>
+@endsection

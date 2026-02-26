@@ -1,0 +1,281 @@
+/* =========================
+   Item Detail (show)
+========================= */
+
+.page {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 24px 16px 56px;
+}
+
+.detail-main {
+    display: grid;
+    grid-template-columns: 420px 1fr;
+    gap: 56px;
+    align-items: start;
+}
+
+/* left image */
+.detail-image {
+    width: 100%;
+}
+
+.detail-image__img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    background: #dcdcdc;
+    border-radius: 6px;
+    display: block;
+}
+
+/* right info */
+.detail-title {
+    font-size: 26px;
+    font-weight: 800;
+    margin: 0 0 6px;
+}
+
+.detail-brand {
+    margin: 0 0 12px;
+    color: #666;
+    font-size: 13px;
+}
+
+.detail-price {
+    margin: 0 0 10px;
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.detail-price__tax {
+    font-size: 12px;
+    font-weight: 700;
+    color: #666;
+    margin-left: 6px;
+}
+
+.detail-icons {
+    display: flex;
+    gap: 26px;
+    align-items: center;
+    margin: 8px 0 14px;
+}
+
+.detail-icon {
+    display: grid;
+    justify-items: center;
+    gap: 4px;
+}
+
+.icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+}
+
+.icon-heart {
+    font-size: 22px;
+    color: #777;
+    line-height: 1;
+}
+
+.icon-heart.is-active {
+    color: #e60000;
+}
+
+.icon-bubble {
+    font-size: 18px;
+}
+
+.icon-count {
+    font-size: 12px;
+    color: #666;
+    font-weight: 700;
+}
+
+/* sold / buy */
+.detail-sold {
+    display: inline-block;
+    margin: 8px 0 0;
+    font-weight: 900;
+    color: #111;
+}
+
+.detail-buy {
+    margin: 10px 0 18px;
+}
+
+.detail-own {
+    display: inline-block;
+    padding: 10px 12px;
+    background: #f3f4f6;
+    border-radius: 6px;
+    font-weight: 700;
+    color: #444;
+}
+
+.btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    padding: 0 16px;
+    border-radius: 4px;
+    background: #ff4b4b;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 800;
+    font-size: 14px;
+    border: none;
+}
+
+.btn-primary--wide {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.detail-section {
+    margin-top: 18px;
+}
+
+.detail-section__title {
+    margin: 18px 0 10px;
+    font-size: 16px;
+    font-weight: 900;
+}
+
+/* description */
+.detail-desc__meta {
+    margin: 0 0 6px;
+    color: #444;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.detail-desc__text {
+    margin: 8px 0 0;
+    font-size: 13px;
+    line-height: 1.7;
+    color: #333;
+}
+
+/* info table */
+.detail-table {
+    display: grid;
+    gap: 12px;
+}
+
+.detail-row {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 12px;
+    align-items: center;
+}
+
+.detail-key {
+    font-size: 13px;
+    font-weight: 900;
+    color: #333;
+}
+
+.detail-val {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: #eee;
+    font-size: 12px;
+    font-weight: 800;
+    color: #333;
+}
+
+/* comments */
+.comments {
+    display: grid;
+    gap: 14px;
+    margin: 10px 0 12px;
+}
+
+.comment-user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.comment-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 999px;
+    background: #d9d9d9;
+}
+
+.comment-name {
+    font-weight: 900;
+    font-size: 13px;
+}
+
+.comment-body {
+    background: #efefef;
+    border-radius: 4px;
+    padding: 10px 12px;
+    font-size: 13px;
+    color: #333;
+}
+
+.comment-form__label {
+    font-size: 13px;
+    font-weight: 900;
+    margin: 14px 0 8px;
+}
+
+.comment-form__textarea {
+    width: 100%;
+    min-height: 140px;
+    border: 1px solid #bdbdbd;
+    border-radius: 2px;
+    padding: 10px;
+    font-size: 13px;
+    resize: vertical;
+}
+
+.empty {
+    color: #777;
+    margin: 12px 0;
+}
+
+/* responsive */
+@media (max-width: 900px) {
+    .detail-main {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+}
+
+.icon-img {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    display: block;
+}
+
+.icon-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}

@@ -1,0 +1,97 @@
+.page {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 40px 16px 80px;
+}
+
+.sell-title {
+    text-align: center;
+    font-size: 22px;
+    font-weight: 900;
+    margin-bottom: 30px;
+}
+
+.sell-section {
+    margin-bottom: 24px;
+}
+
+.sell-label {
+    display: block;
+    font-weight: 900;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.sell-input,
+.sell-select,
+.sell-textarea {
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-size: 14px;
+}
+
+.sell-textarea {
+    min-height: 100px;
+}
+
+.sell-price {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* 画像エリア */
+.sell-image-box {
+    border: 2px dashed #ccc;
+    padding: 30px;
+    text-align: center;
+}
+
+/* カテゴリータグ */
+.sell-categories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.sell-tag input {
+    display: none;
+}
+
+.sell-tag span {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 999px;
+    border: 1px solid #ff4b4b;
+    color: #ff4b4b;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+/* 選択されたら赤く塗る */
+.sell-tag input:checked+span {
+    background: #ff4b4b;
+    color: #fff;
+}
+
+/* ボタン */
+.sell-submit {
+    width: 100%;
+    margin-top: 30px;
+    height: 46px;
+    border: none;
+    border-radius: 4px;
+    background: #ff4b4b;
+    color: #fff;
+    font-weight: 900;
+    cursor: pointer;
+}
+
+.sell-hr {
+    border: none;
+    height: 1px;
+    background: #ddd;
+    margin: 30px 0;
+}

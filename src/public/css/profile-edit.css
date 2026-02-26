@@ -1,0 +1,137 @@
+/* =========================
+   Profile Edit
+========================= */
+
+.page {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 30px 16px 70px;
+}
+
+.profile {
+    display: grid;
+    justify-items: center;
+}
+
+.profile-title {
+    margin: 18px 0 26px;
+    font-size: 22px;
+    font-weight: 900;
+}
+
+.profile-photo {
+    width: 520px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 18px;
+}
+
+.profile-avatar {
+    width: 86px;
+    height: 86px;
+    border-radius: 999px;
+    background: #d9d9d9;
+}
+
+.profile-photo__btnwrap {
+    margin-left: 0;
+}
+
+.profile-photo__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 34px;
+    padding: 0 16px;
+    border-radius: 4px;
+    border: 1px solid #ff4b4b;
+    color: #ff4b4b;
+    font-weight: 900;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.profile-file {
+    display: none;
+}
+
+/* フォーム */
+.profile-form {
+    width: 520px;
+}
+
+.profile-field {
+    margin-bottom: 18px;
+}
+
+.profile-label {
+    display: block;
+    margin: 0 0 8px;
+    font-size: 13px;
+    font-weight: 900;
+    color: #222;
+}
+
+.profile-input {
+    width: 100%;
+    height: 42px;
+    border: 1px solid #bdbdbd;
+    border-radius: 3px;
+    padding: 0 12px;
+    font-size: 14px;
+    outline: none;
+}
+
+.profile-input:focus {
+    border-color: #888;
+}
+
+.profile-error {
+    margin: 6px 0 0;
+    color: #e60000;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+/* ボタン */
+.profile-submit {
+    width: 100%;
+    height: 46px;
+    margin-top: 18px;
+    border: none;
+    border-radius: 3px;
+    background: #ff4b4b;
+    color: #fff;
+    font-weight: 900;
+    cursor: pointer;
+}
+
+.profile-submit:hover {
+    opacity: 0.95;
+}
+
+.profile-back {
+    text-align: center;
+    margin-top: 14px;
+    font-size: 13px;
+}
+
+.profile-back a {
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.profile-back a:hover {
+    text-decoration: underline;
+}
+
+/* スマホ */
+@media (max-width: 640px) {
+
+    .profile-form,
+    .profile-photo {
+        width: 100%;
+    }
+}

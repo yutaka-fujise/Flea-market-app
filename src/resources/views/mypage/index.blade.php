@@ -1,47 +1,88 @@
-<h1>マイページ</h1>
+@extends('layouts.app')
 
-<div>
-  <p>ユーザー名：{{ $user->name }}</p>
+@section('css')
+<link rel="stylesheet" href="{{ asset('css/mypage.css') }}">
+@endsection
 
-  {{-- 画像は後で。profile実装したら差し込む --}}
+@section('content')
+<div class="mypage page">
+
+  {{-- 上：ユーザー情報 --}}
+  <div class="mypage-head">
+    <div class="mypage-user">
+      <div class="mypage-avatar">
+        {{-- 画像は後で差し込み。今はグレー丸 --}}
+      </div>
+
+      <div class="mypage-name">{{ $user->name }}</div>
+    </div>
+
+    <a class="mypage-edit" href="{{ route('mypage.profile.edit') }}">プロフィールを編集</a>
+  </div>
+
+  {{-- タブ --}}
+  <div class="mypage-tabs">
+    <a
+      class="mypage-tab {{ $page === 'sell' || $page === null ? 'is-active' : '' }}"
+      href="{{ route('mypage', ['page' => 'sell']) }}"
+    >
+      出品した商品
+    </a>
+
+    <a
+      class="mypage-tab {{ $page === 'buy' ? 'is-active' : '' }}"
+      href="{{ route('mypage', ['page' => 'buy']) }}"
+    >
+      購入した商品
+    </a>
+  </div>
+
+  <hr class="mypage-hr">
+
+  {{-- 一覧（画像の4列グリッド） --}}
+  @if($page === 'buy')
+    <div class="mypage-grid">
+      @forelse($orders as $order)
+        @php $item = $order->item; @endphp
+
+        @if($item)
+          <a class="mypage-card" href="{{ route('items.show', ['item_id' => $item->id]) }}">
+            <div class="mypage-thumb">
+              <img
+                class="mypage-thumb__img"
+                src="{{ str_starts_with($item->image, 'items/') ? asset('storage/'.$item->image) : asset($item->image) }}"
+                alt="{{ $item->name }}"
+              >
+            </div>
+            <div class="mypage-card__name">{{ $item->name }}</div>
+          </a>
+        @else
+          <div class="mypage-emptycard">商品が見つかりません</div>
+        @endif
+      @empty
+        <p class="mypage-empty">購入履歴はありません</p>
+      @endforelse
+    </div>
+
+  @else
+    {{-- sell をデフォルトに（画像は出品した商品が赤） --}}
+    <div class="mypage-grid">
+      @forelse($items as $item)
+        <a class="mypage-card" href="{{ route('items.show', ['item_id' => $item->id]) }}">
+          <div class="mypage-thumb">
+            <img
+              class="mypage-thumb__img"
+              src="{{ str_starts_with($item->image, 'items/') ? asset('storage/'.$item->image) : asset($item->image) }}"
+              alt="{{ $item->name }}"
+            >
+          </div>
+          <div class="mypage-card__name">{{ $item->name }}</div>
+        </a>
+      @empty
+        <p class="mypage-empty">出品履歴はありません</p>
+      @endforelse
+    </div>
+  @endif
+
 </div>
-
-<nav>
-  <a href="{{ route('mypage') }}">トップ</a> |
-  <a href="{{ route('mypage', ['page' => 'buy']) }}">購入履歴</a> |
-  <a href="{{ route('mypage', ['page' => 'sell']) }}">出品履歴</a><a href="{{ route('mypage.profile.edit') }}">プロフィール編集</a>
-</nav>
-
-<hr>
-
-@if($page === 'buy')
-  <h2>購入履歴</h2>
-
-  @forelse($orders as $order)
-    <div>
-      <p>商品：{{ $order->item->name ?? '商品が見つかりません' }}</p>
-      <p>支払い：{{ $order->payment_method }}</p>
-      <p>購入日：{{ $order->created_at }}</p>
-    </div>
-    <hr>
-  @empty
-    <p>購入履歴はありません</p>
-  @endforelse
-
-@elseif($page === 'sell')
-  <h2>出品履歴</h2>
-
-  @forelse($items as $item)
-    <div>
-      <p>商品：{{ $item->name }}</p>
-      <p>価格：{{ $item->price }}</p>
-    </div>
-    <hr>
-  @empty
-    <p>出品履歴はありません</p>
-  @endforelse
-
-@else
-  <h2>メニュー</h2>
-  <p>上のリンクから「購入履歴 / 出品履歴」を選べます。</p>
-@endif
+@endsection

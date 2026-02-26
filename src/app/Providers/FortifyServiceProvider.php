@@ -12,6 +12,10 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Laravel\Fortify\Fortify;
+use Laravel\Fortify\Contracts\RegisterResponse;
+use Laravel\Fortify\Contracts\VerifyEmailResponse;
+use Laravel\Fortify\Contracts\LogoutResponse;
+use App\Http\Responses\LogoutResponse as CustomLogoutResponse;
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -20,7 +24,7 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->singleton(LogoutResponse::class, CustomLogoutResponse::class);
     }
 
     /**
@@ -34,7 +38,9 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
 
         RateLimiter::for('login', function (Request $request) {
-            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())).'|'.$request->ip());
+            $throttleKey = Str::transliterate(
+                Str::lower($request->input(Fortify::username())) . '|' . $request->ip()
+            );
 
             return Limit::perMinute(5)->by($throttleKey);
         });
@@ -49,6 +55,20 @@ class FortifyServiceProvider extends ServiceProvider
 
         Fortify::registerView(function () {
             return view('auth.register');
+        });
+
+        Fortify::verifyEmailView(function () {
+            return view('auth.verify-email');
+        });
+
+        $this->app->singleton(RegisterResponse::class, function () {
+            return new class implements RegisterResponse {
+                public function toResponse($request)
+                {
+                    // 登録直後は必ずメール認証画面へ
+                    return redirect()->route('profile.setup');
+                }
+            };
         });
     }
 }

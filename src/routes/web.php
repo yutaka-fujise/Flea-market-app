@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\MypageController;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,7 +31,7 @@ Route::post('/item/{item_id}/comment', [ItemController::class, 'storeComment'])
     ->name('items.comment');
 
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/purchase/{item}', [PurchaseController::class, 'confirm'])
         ->name('purchase.confirm');
@@ -59,7 +60,31 @@ Route::middleware('auth')->group(function () {
     Route::post('/mypage/profile', [MypageController::class, 'updateProfile'])
         ->name('mypage.profile.update');
 
-    Route::get('/sell', [ItemController::class, 'create'])->name('sell.create');
-    
-    Route::post('/sell', [ItemController::class, 'store'])->name('sell.store');
+    Route::get('/sell', [ItemController::class, 'create'])
+        ->name('sell.create');
+
+    Route::post('/sell', [ItemController::class, 'store'])
+        ->name('sell.store');
+
+    // 初回プロフィール設定（表示）
+    Route::get('/profile/setup', [MypageController::class, 'setupProfile'])
+        ->name('profile.setup');
+
+    // 初回プロフィール設定（保存）
+    Route::post('/profile/setup', [MypageController::class, 'storeProfile'])
+        ->name('profile.store');
+});
+
+
+Route::get('/', function () {
+    if (Auth::check()) {
+
+        // 未認証ならメール認証へ
+        if (!Auth::user()->profile) {
+            return redirect()->route('profile.setup');
+        }
+    }
+
+    // ここで通常の商品一覧を表示（既存の一覧処理へ）
+    return app(\App\Http\Controllers\ItemController::class)->index(request());
 });
