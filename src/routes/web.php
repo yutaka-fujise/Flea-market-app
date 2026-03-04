@@ -17,8 +17,6 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-Route::get('/', [ItemController::class, 'index']);
-
 Route::get('/item/{item_id}', [ItemController::class, 'show'])
     ->name('items.show');
 
@@ -79,7 +77,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 Route::get('/', function () {
     if (Auth::check()) {
 
-        // 未認証ならメール認証へ
+        // プロフィール未設定なら初回プロフィール設定へ
         if (!Auth::user()->profile) {
             return redirect()->route('profile.setup');
         }

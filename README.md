@@ -119,6 +119,8 @@ php artisan storage:link
 
 ・phpMyAdmin：http://localhost:8080/
 
+・ログイン画面：http://localhost/login
+
 ## 補足
 
 ・認証機能には Laravel Fortify を使用しています。

@@ -30,6 +30,14 @@
   background: #d9d9d9;
 }
 
+.mypage-avatar__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 50%;
+}
+
 .mypage-name {
   font-size: 20px;
   font-weight: 900;

@@ -24,6 +24,10 @@ class ItemController extends Controller
         $query = Item::with('user')
             ->withCount(['favorites', 'orders']);
 
+        if (auth()->check()) {
+            $query->where('user_id', '!=', auth()->id());
+        }
+
         // mylist のときだけ「自分がいいねした商品」に絞る
         if ($request->query('tab') === 'mylist') {
             $query->whereHas('favorites', function ($q) {
@@ -49,7 +53,12 @@ class ItemController extends Controller
 
     public function show($item_id)
     {
-        $item = Item::with(['user', 'comments.user'])
+        $item = Item::with([
+                'user',
+                'comments.user.profile',
+                'categories',
+                'condition',
+            ])
             ->withCount(['favorites', 'orders'])
             ->findOrFail($item_id);
 
@@ -67,6 +76,13 @@ class ItemController extends Controller
 
     public function toggleFavorite($item_id)
     {
+        $item = Item::findOrFail($item_id);
+
+        // 自分の商品はいいね不可
+        if ($item->user_id === Auth::id()) {
+            return back()->with('error', '自分の商品にはいいねできません');
+        }
+
         $userId = auth()->id();
 
         $favorite = Favorite::where('user_id', $userId)
@@ -74,10 +90,8 @@ class ItemController extends Controller
             ->first();
 
         if ($favorite) {
-            // いいね済み → 解除
             $favorite->delete();
         } else {
-            // 未いいね → 登録
             Favorite::create([
                 'user_id' => $userId,
                 'item_id' => $item_id,
@@ -90,6 +104,13 @@ class ItemController extends Controller
 
     public function storeComment(Request $request, $item_id)
     {
+        $item = Item::findOrFail($item_id);
+
+        // 自分の商品はコメント不可
+        if ($item->user_id === Auth::id()) {
+            return back()->with('error', '自分の商品にはコメントできません');
+        }
+
         $request->validate([
             'comment' => ['required', 'string', 'max:255'],
         ]);
@@ -103,39 +124,49 @@ class ItemController extends Controller
         return back();
     }
 
+
     public function create()
-{
-    $categories = Category::all();
-    $conditions = Condition::all();
+    {
+        $categories = Category::all();
+        $conditions = Condition::all();
 
-    return view('items.sell', compact('categories', 'conditions'));
-}
+        return view('items.sell', compact('categories', 'conditions'));
+    }
 
-public function store(Request $request)
-{
-    $validated = $request->validate([
-        'name' => ['required', 'string', 'max:255'],
-        'brand' => ['required', 'string', 'max:255'],
-        'description' => ['required', 'string'],
-        'price' => ['required', 'integer', 'min:1'],
-        'category_id' => ['required', 'exists:categories,id'],
-        'condition_id' => ['required', 'exists:conditions,id'],
-        'image' => ['required', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
-    ]);
 
-    $imagePath = $request->file('image')->store('items', 'public');
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'brand' => ['required', 'string', 'max:255'],
+            'description' => ['required', 'string'],
+            'price' => ['required', 'integer', 'min:1'],
+            'condition_id' => ['required', 'exists:conditions,id'],
 
-    Item::create([
-        'name' => $validated['name'],
-        'brand' => $validated['brand'],
-        'description' => $validated['description'],
-        'price' => $validated['price'],
-        'category_id' => $validated['category_id'],
-        'condition_id' => $validated['condition_id'],
-        'image' => $imagePath,
-        'user_id' => Auth::id(),
-    ]);
+            'categories' => ['required', 'array'],
+            'categories.*' => ['exists:categories,id'],
 
-    return redirect()->route('mypage', ['page' => 'sell']);
-}
+            'image' => ['required', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
+        ]);
+
+        $imagePath = $request->file('image')->store('items', 'public');
+
+        $item = Item::create([
+            'name' => $validated['name'],
+            'brand' => $validated['brand'],
+            'description' => $validated['description'],
+            'price' => $validated['price'],
+            'condition_id' => $validated['condition_id'],
+            'image' => $imagePath,
+            'user_id' => Auth::id(),
+
+            // ⚠️ ここは一旦入れない（category_idは使わない方向）
+            // 'category_id' => ???,
+        ]);
+
+        // ⭐ ここが「複数カテゴリ保存」
+        $item->categories()->sync($validated['categories']);
+
+        return redirect()->route('mypage', ['page' => 'sell']);
+    }
 }

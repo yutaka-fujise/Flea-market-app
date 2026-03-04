@@ -200,3 +200,22 @@
         grid-column: auto;
     }
 }
+
+/* フラッシュ */
+.confirm-flash {
+    margin: 12px 0;
+    padding: 12px 14px;
+    border-radius: 8px;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.confirm-flash--success {
+    background: #e9f7ef;
+    border: 1px solid #b7e2c7;
+}
+
+.confirm-flash--error {
+    background: #fdecec;
+    border: 1px solid #f5b5b5;
+}

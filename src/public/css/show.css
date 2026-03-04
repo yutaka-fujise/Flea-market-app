@@ -224,6 +224,14 @@
     background: #d9d9d9;
 }
 
+.comment-avatar__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 50%;
+}
+
 .comment-name {
     font-weight: 900;
     font-size: 13px;
@@ -278,4 +286,28 @@
     border: none;
     padding: 0;
     cursor: pointer;
+}
+
+.error {
+    color: #ff4d4f;
+    font-size: 14px;
+    margin-top: 6px;
+}
+
+.confirm-flash {
+    margin: 12px 0;
+    padding: 12px 14px;
+    border-radius: 8px;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.confirm-flash--success {
+    background: #e9f7ef;
+    border: 1px solid #b7e2c7;
+}
+
+.confirm-flash--error {
+    background: #fdecec;
+    border: 1px solid #f5b5b5;
 }

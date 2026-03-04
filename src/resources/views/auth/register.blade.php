@@ -27,7 +27,7 @@
 
     <div class="auth-field">
       <label class="auth-label">メールアドレス</label>
-      <input class="auth-input" type="email" name="email" value="{{ old('email') }}">
+      <input class="auth-input @error('email') is-error @enderror" type="text" name="email" value="{{ old('email') }}">
     </div>
 
     <div class="auth-field">

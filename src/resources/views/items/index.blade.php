@@ -34,7 +34,7 @@
                         {{-- 画像パスはプロジェクトに合わせて調整 --}}
                         <img
                             class="item-card__img"
-                            src="{{ str_starts_with($item->image, 'items/') ? asset('storage/' . $item->image) : asset($item->image) }}"
+                            src="{{ asset('storage/' . $item->image) }}"
                             alt="{{ $item->name }}"
                             loading="lazy"
                         >

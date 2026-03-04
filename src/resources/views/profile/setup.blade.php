@@ -1,43 +1,122 @@
 @extends('layouts.app')
 
 @section('css')
-<link rel="stylesheet" href="{{ asset('css/profile-edit.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/profile-edit.css') }}">
 @endsection
 
 @section('content')
+
 <div class="profile page">
-  <h1 class="profile-title">プロフィール設定</h1>
 
-  <form action="{{ route('profile.store') }}" method="POST" class="profile-form">
-    @csrf
+    <h1 class="profile-title">
+        プロフィール設定
+    </h1>
 
-    {{-- ここから下はプロフィール編集と同じ --}}
-    <div class="profile-field">
-      <label class="profile-label">ユーザー名</label>
-      <input class="profile-input" type="text" name="name" value="{{ old('name', $user->name) }}">
-      @error('name')<p class="profile-error">{{ $message }}</p>@enderror
-    </div>
+    <form
+        action="{{ route('profile.store') }}"
+        method="POST"
+        class="profile-form"
+    >
+        @csrf
 
-    <div class="profile-field">
-      <label class="profile-label">郵便番号</label>
-      <input class="profile-input" type="text" name="postal_code" value="{{ old('postal_code', optional($profile)->postal_code) }}">
-      @error('postal_code')<p class="profile-error">{{ $message }}</p>@enderror
-    </div>
+        {{-- ここから下はプロフィール編集と同じ --}}
+        <div class="profile-field">
 
-    <div class="profile-field">
-      <label class="profile-label">住所</label>
-      <input class="profile-input" type="text" name="address" value="{{ old('address', optional($profile)->address) }}">
-      @error('address')<p class="profile-error">{{ $message }}</p>@enderror
-    </div>
+            <label class="profile-label">
+                ユーザー名
+            </label>
 
-    <div class="profile-field">
-      <label class="profile-label">建物名</label>
-      <input class="profile-input" type="text" name="building" value="{{ old('building', optional($profile)->building) }}">
-      @error('building')<p class="profile-error">{{ $message }}</p>@enderror
-    </div>
+            <input
+                class="profile-input"
+                type="text"
+                name="name"
+                value="{{ old('name', $user->name) }}"
+            >
 
-    <button type="submit" class="profile-submit">更新する</button>
-    
-  </form>
+            @error('name')
+                <p class="profile-error">
+                    {{ $message }}
+                </p>
+            @enderror
+
+        </div>
+
+
+        <div class="profile-field">
+
+            <label class="profile-label">
+                郵便番号
+            </label>
+
+            <input
+                class="profile-input"
+                type="text"
+                name="postal_code"
+                value="{{ old('postal_code', optional($profile)->postal_code) }}"
+            >
+
+            @error('postal_code')
+                <p class="profile-error">
+                    {{ $message }}
+                </p>
+            @enderror
+
+        </div>
+
+
+        <div class="profile-field">
+
+            <label class="profile-label">
+                住所
+            </label>
+
+            <input
+                class="profile-input"
+                type="text"
+                name="address"
+                value="{{ old('address', optional($profile)->address) }}"
+            >
+
+            @error('address')
+                <p class="profile-error">
+                    {{ $message }}
+                </p>
+            @enderror
+
+        </div>
+
+
+        <div class="profile-field">
+
+            <label class="profile-label">
+                建物名
+            </label>
+
+            <input
+                class="profile-input"
+                type="text"
+                name="building"
+                value="{{ old('building', optional($profile)->building) }}"
+            >
+
+            @error('building')
+                <p class="profile-error">
+                    {{ $message }}
+                </p>
+            @enderror
+
+        </div>
+
+
+        <button
+            type="submit"
+            class="profile-submit"
+        >
+            更新する
+        </button>
+
+    </form>
+
 </div>
+
 @endsection

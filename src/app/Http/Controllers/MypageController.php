@@ -7,12 +7,13 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Order;
 use App\Models\Item;
 use App\Models\Profile;
+use Illuminate\Support\Facades\Storage;
 
 class MypageController extends Controller
 {
     public function index(Request $request)
     {
-        $user = Auth::user();
+        $user = Auth::user()->load('profile');
         $page = $request->query('page'); // buy / sell / null
 
         if ($page === 'buy') {
@@ -47,24 +48,39 @@ class MypageController extends Controller
         $user = Auth::user();
 
         $validated = $request->validate([
-            'name'        => ['required', 'string', 'max:255'],
-            'postal_code' => ['required', 'string', 'max:8'],
-            'address'     => ['required', 'string', 'max:255'],
-            'building'    => ['nullable', 'string', 'max:255'],
+            'name'          => ['required', 'string', 'max:255'],
+            'postal_code'   => ['required', 'string', 'max:8'],
+            'address'       => ['required', 'string', 'max:255'],
+            'building'      => ['nullable', 'string', 'max:255'],
+            'profile_image' => ['nullable', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
         ]);
 
         $user->update([
             'name' => $validated['name'],
         ]);
 
+        // 既存プロフィール取得（古い画像削除に使う）
+        $profile = Profile::where('user_id', $user->id)->first();
+
+        $data = [
+            'name'        => $validated['name'],
+            'postal_code' => $validated['postal_code'],
+            'address'     => $validated['address'],
+            'building'    => $validated['building'] ?? null,
+        ];
+
+        if ($request->hasFile('profile_image')) {
+            // 任意：古い画像を消す（保存先がpublicの場合のみ）
+            if ($profile && $profile->profile_image) {
+                Storage::disk('public')->delete($profile->profile_image);
+            }
+
+            $data['profile_image'] = $request->file('profile_image')->store('profiles', 'public');
+        }
+
         Profile::updateOrCreate(
             ['user_id' => $user->id],
-            [
-                'name'        => $validated['name'],
-                'postal_code' => $validated['postal_code'],
-                'address'     => $validated['address'],
-                'building'    => $validated['building'] ?? null,
-            ]
+            $data
         );
 
         return redirect('/')
@@ -92,22 +108,29 @@ class MypageController extends Controller
         $user = Auth::user();
 
         $validated = $request->validate([
-            'name'        => ['required', 'string', 'max:255'],
-            'postal_code' => ['required', 'string', 'max:8'],
-            'address'     => ['required', 'string', 'max:255'],
-            'building'    => ['nullable', 'string', 'max:255'],
+            'name'          => ['required', 'string', 'max:255'],
+            'postal_code'   => ['required', 'string', 'max:8'],
+            'address'       => ['required', 'string', 'max:255'],
+            'building'      => ['nullable', 'string', 'max:255'],
+            'profile_image' => ['nullable', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
         ]);
 
         $user->update(['name' => $validated['name']]);
 
+        $data = [
+            'name'        => $validated['name'],
+            'postal_code' => $validated['postal_code'],
+            'address'     => $validated['address'],
+            'building'    => $validated['building'] ?? null,
+        ];
+
+        if ($request->hasFile('profile_image')) {
+            $data['profile_image'] = $request->file('profile_image')->store('profiles', 'public');
+        }
+
         Profile::updateOrCreate(
             ['user_id' => $user->id],
-            [
-                'name'        => $validated['name'],
-                'postal_code' => $validated['postal_code'],
-                'address'     => $validated['address'],
-                'building'    => $validated['building'] ?? null,
-            ]
+            $data
         );
 
         return redirect('/')

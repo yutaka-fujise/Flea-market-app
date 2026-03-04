@@ -34,4 +34,13 @@ class Item extends Model
         return $this->hasMany(Order::class);
     }
 
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class)->withTimestamps();
+    }
+
+    public function condition()
+    {
+        return $this->belongsTo(Condition::class);
+    }
 }
