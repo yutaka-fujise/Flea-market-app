@@ -147,6 +147,8 @@ class ItemController extends Controller
             'categories.*' => ['exists:categories,id'],
 
             'image' => ['required', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
+        ], [
+            'name.required' => '商品名を入力してください',
         ]);
 
         $imagePath = $request->file('image')->store('items', 'public');
@@ -159,12 +161,8 @@ class ItemController extends Controller
             'condition_id' => $validated['condition_id'],
             'image' => $imagePath,
             'user_id' => Auth::id(),
-
-            // ⚠️ ここは一旦入れない（category_idは使わない方向）
-            // 'category_id' => ???,
         ]);
 
-        // ⭐ ここが「複数カテゴリ保存」
         $item->categories()->sync($validated['categories']);
 
         return redirect()->route('mypage', ['page' => 'sell']);
