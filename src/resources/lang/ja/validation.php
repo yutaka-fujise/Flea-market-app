@@ -8,6 +8,11 @@ return [
         'string' => ':attribute は:max文字以内で入力してください。',
     ],
 
+    'min' => [
+        'string' => ':attribute は:min文字以上で入力してください。',
+        'numeric' => ':attribute は:min以上で入力してください。',
+    ],
+
     'image' => ':attribute は画像ファイルを選択してください。',
 
     'mimes' => ':attribute は:values形式のファイルを選択してください。',
@@ -38,6 +43,10 @@ return [
         'comment' => [
             'required' => 'コメントを入力してください',
             'max' => 'コメントは255文字以内で入力してください',
+        ],
+
+        'price' => [
+            'min' => '価格は1円以上で入力してください',
         ],
 
     ],
