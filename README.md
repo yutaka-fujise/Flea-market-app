@@ -32,9 +32,11 @@ no matching manifest for linux/arm64/v8 in the manifest list entries
 その際は docker-compose.yml の mysql サービスに
 以下の記述を追加してください。
 
+```bash
 mysql:
-platform: linux/x86_64
-image: mysql:8.0.26
+  platform: linux/x86_64
+  image: mysql:8.0.26
+```
 
 ## Laravel 環境構築
 
@@ -56,13 +58,14 @@ composer install
 cp .env.example .env
 ```
 
-4. .env に以下の環境変数を追加(11行目から16行目を以下に変更してください)
-   DB_CONNECTION=mysql
-   DB_HOST=mysql
-   DB_PORT=3306
-   DB_DATABASE=laravel_db
-   DB_USERNAME=laravel_user
-   DB_PASSWORD=laravel_pass
+4. .env のデータベース設定を確認してください
+```env
+DB_HOST=mysql
+DB_PORT=3306
+DB_DATABASE=laravel_db
+DB_USERNAME=laravel_user
+DB_PASSWORD=laravel_pass
+```
 
 5.アプリケーションキーの作成
 
@@ -88,6 +91,21 @@ php artisan db:seed
 php artisan storage:link
 ```
 
+9.Stripe 設定（購入機能）
+
+Stripe を使用した決済機能があります。
+.env に以下を設定してください。
+
+```env
+STRIPE_KEY=your_stripe_public_key
+STRIPE_SECRET=your_stripe_secret_key
+```
+
+Stripe テストカード
+```text
+4242 4242 4242 4242
+```
+
 ## 使用技術（実行環境）
 
 - PHP 8.x
@@ -98,6 +116,7 @@ php artisan storage:link
 ## 機能一覧
 
 - ユーザー登録 / ログイン（Fortify）
+- メール認証
 - 商品一覧表示
 - 商品詳細表示
 - 商品出品
