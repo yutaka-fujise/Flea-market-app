@@ -106,6 +106,14 @@ Stripe テストカード
 4242 4242 4242 4242
 ```
 
+## トラブルシュート
+
+storage/logs の権限エラーが発生した場合は以下を実行してください。
+
+```bash
+chmod -R 777 storage bootstrap/cache
+```
+
 ## 使用技術（実行環境）
 
 - PHP 8.x
