@@ -48,10 +48,10 @@ class MypageController extends Controller
         $user = Auth::user();
 
         $validated = $request->validate([
-            'name'          => ['required', 'string', 'max:255'],
-            'postal_code'   => ['required', 'string', 'max:8'],
-            'address'       => ['required', 'string', 'max:255'],
-            'building'      => ['nullable', 'string', 'max:255'],
+            'name' => ['required', 'string', 'max:255'],
+            'postal_code' => ['required', 'regex:/^\d{3}-\d{4}$/'],
+            'address' => ['required', 'string', 'max:255'],
+            'building' => ['nullable', 'string', 'max:255'],
             'profile_image' => ['nullable', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
         ]);
 
@@ -63,10 +63,10 @@ class MypageController extends Controller
         $profile = Profile::where('user_id', $user->id)->first();
 
         $data = [
-            'name'        => $validated['name'],
+            'name' => $validated['name'],
             'postal_code' => $validated['postal_code'],
-            'address'     => $validated['address'],
-            'building'    => $validated['building'] ?? null,
+            'address' => $validated['address'],
+            'building' => $validated['building'] ?? null,
         ];
 
         if ($request->hasFile('profile_image')) {
@@ -90,16 +90,7 @@ class MypageController extends Controller
 
     public function setupProfile()
     {
-        $user = Auth::user();
-
-        // すでにプロフィールがある人は編集へ or 一覧へ（どっちでもOK）
-        if ($user->profile) {
-            return redirect()->route('mypage.profile.edit');
-        }
-
-        $profile = $user->profile; // null想定
-
-        return view('profile.setup', compact('user', 'profile'));
+        return redirect()->route('mypage.profile.edit');
     }
 
 
@@ -108,20 +99,22 @@ class MypageController extends Controller
         $user = Auth::user();
 
         $validated = $request->validate([
-            'name'          => ['required', 'string', 'max:255'],
-            'postal_code'   => ['required', 'string', 'max:8'],
-            'address'       => ['required', 'string', 'max:255'],
-            'building'      => ['nullable', 'string', 'max:255'],
+            'name' => ['required', 'string', 'max:255'],
+            'postal_code' => ['required', 'regex:/^\d{3}-\d{4}$/'],
+            'address' => ['required', 'string', 'max:255'],
+            'building' => ['nullable', 'string', 'max:255'],
             'profile_image' => ['nullable', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
         ]);
 
-        $user->update(['name' => $validated['name']]);
+        $user->update([
+            'name' => $validated['name'],
+        ]);
 
         $data = [
-            'name'        => $validated['name'],
+            'name' => $validated['name'],
             'postal_code' => $validated['postal_code'],
-            'address'     => $validated['address'],
-            'building'    => $validated['building'] ?? null,
+            'address' => $validated['address'],
+            'building' => $validated['building'] ?? null,
         ];
 
         if ($request->hasFile('profile_image')) {

@@ -63,7 +63,7 @@
 
             <div class="sell-categories">
 
-                @foreach($categories as $category)
+                @foreach ($categories as $category)
 
                     <label class="sell-tag">
 
@@ -94,13 +94,16 @@
                 商品の状態
             </label>
 
-            <select name="condition_id" class="sell-select">
+            <select
+                name="condition_id"
+                class="sell-select"
+            >
 
-                @foreach($conditions as $condition)
+                @foreach ($conditions as $condition)
 
                     <option
                         value="{{ $condition->id }}"
-                        {{ (string)old('condition_id') === (string)$condition->id ? 'selected' : '' }}
+                        {{ (string) old('condition_id') === (string) $condition->id ? 'selected' : '' }}
                     >
                         {{ $condition->name }}
                     </option>

@@ -64,7 +64,10 @@
                         >
                             @csrf
 
-                            <button type="submit" class="icon-btn">
+                            <button
+                                type="submit"
+                                class="icon-btn"
+                            >
                                 <img
                                     src="{{ asset(
                                         $isFavorited
@@ -75,18 +78,18 @@
                                     class="icon-img"
                                 >
                             </button>
-
                         </form>
                     @else
-
-                        <a href="{{ url('/login') }}" class="icon-btn">
+                        <a
+                            href="{{ url('/login') }}"
+                            class="icon-btn"
+                        >
                             <img
                                 src="{{ asset('images/material/ハートロゴ_デフォルト.png') }}"
                                 alt="favorite"
                                 class="icon-img"
                             >
                         </a>
-
                     @endauth
 
 
@@ -143,7 +146,7 @@
                     @auth
                         <a
                             href="{{ route('purchase.confirm', $item->id) }}"
-                            class="btn-primary"
+                            class="btn-primary btn-primary--wide"
                         >
                             購入手続きへ
                         </a>
@@ -303,7 +306,6 @@
                             action="{{ route('items.comment', ['item_id' => $item->id]) }}"
                             method="POST"
                         >
-
                             @csrf
 
                             <div class="comment-form__label">
@@ -321,7 +323,6 @@
                                     {{ $message }}
                                 </p>
                             @enderror
-
 
                             <button
                                 class="btn-primary btn-primary--wide"

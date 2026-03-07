@@ -31,7 +31,7 @@
 
 /* right info */
 .detail-title {
-    font-size: 26px;
+    font-size: 28px;
     font-weight: 800;
     margin: 0 0 6px;
 }
@@ -39,17 +39,17 @@
 .detail-brand {
     margin: 0 0 12px;
     color: #666;
-    font-size: 13px;
+    font-size: 14px;
 }
 
 .detail-price {
     margin: 0 0 10px;
-    font-size: 20px;
+    font-size: 22px;
     font-weight: 800;
 }
 
 .detail-price__tax {
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 700;
     color: #666;
     margin-left: 6px;
@@ -96,7 +96,7 @@
 }
 
 .icon-count {
-    font-size: 12px;
+    font-size: 13px;
     color: #666;
     font-weight: 700;
 }
@@ -107,10 +107,12 @@
     margin: 8px 0 0;
     font-weight: 900;
     color: #111;
+    font-size: 15px;
 }
 
 .detail-buy {
     margin: 10px 0 18px;
+    width: 100%;
 }
 
 .detail-own {
@@ -120,20 +122,21 @@
     border-radius: 6px;
     font-weight: 700;
     color: #444;
+    font-size: 14px;
 }
 
 .btn-primary {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    height: 40px;
+    height: 46px;
     padding: 0 16px;
     border-radius: 4px;
     background: #ff4b4b;
     color: #fff;
     text-decoration: none;
     font-weight: 800;
-    font-size: 14px;
+    font-size: 15px;
     border: none;
 }
 
@@ -148,7 +151,7 @@
 
 .detail-section__title {
     margin: 18px 0 10px;
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 900;
 }
 
@@ -156,13 +159,13 @@
 .detail-desc__meta {
     margin: 0 0 6px;
     color: #444;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 700;
 }
 
 .detail-desc__text {
     margin: 8px 0 0;
-    font-size: 13px;
+    font-size: 15px;
     line-height: 1.7;
     color: #333;
 }
@@ -181,7 +184,7 @@
 }
 
 .detail-key {
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 900;
     color: #333;
 }
@@ -198,7 +201,7 @@
     padding: 6px 12px;
     border-radius: 999px;
     background: #eee;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 800;
     color: #333;
 }
@@ -234,19 +237,19 @@
 
 .comment-name {
     font-weight: 900;
-    font-size: 13px;
+    font-size: 14px;
 }
 
 .comment-body {
     background: #efefef;
     border-radius: 4px;
     padding: 10px 12px;
-    font-size: 13px;
+    font-size: 14px;
     color: #333;
 }
 
 .comment-form__label {
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 900;
     margin: 14px 0 8px;
 }
@@ -257,13 +260,14 @@
     border: 1px solid #bdbdbd;
     border-radius: 2px;
     padding: 10px;
-    font-size: 13px;
+    font-size: 14px;
     resize: vertical;
 }
 
 .empty {
     color: #777;
     margin: 12px 0;
+    font-size: 14px;
 }
 
 /* responsive */

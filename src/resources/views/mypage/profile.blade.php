@@ -8,7 +8,9 @@
 
 <div class="profile page">
 
-    <h1 class="profile-title">プロフィール設定</h1>
+    <h1 class="profile-title">
+        プロフィール設定
+    </h1>
 
     <form
         action="{{ route('mypage.profile.update') }}"
@@ -21,6 +23,7 @@
         <div class="profile-photo">
 
             <div class="profile-avatar">
+
                 <img
                     id="profile-preview"
                     class="profile-avatar__img"
@@ -28,6 +31,7 @@
                     alt="プロフィール画像"
                     style="{{ optional($profile)->profile_image ? '' : 'display:none;' }}"
                 >
+
             </div>
 
             <label class="profile-photo__btn">
@@ -40,8 +44,13 @@
                     class="profile-file"
                     accept="image/*"
                 >
-
             </label>
+
+            @error('profile_image')
+                <p class="profile-error">
+                    {{ $message }}
+                </p>
+            @enderror
 
         </div>
 
@@ -78,6 +87,7 @@
                 class="profile-input"
                 type="text"
                 name="postal_code"
+                placeholder="123-4567"
                 value="{{ old('postal_code', optional($profile)->postal_code) }}"
             >
 
@@ -141,13 +151,6 @@
             更新する
         </button>
 
-
-        <div class="profile-back">
-            <a href="{{ route('mypage') }}">
-                戻る
-            </a>
-        </div>
-
     </form>
 
 </div>
@@ -173,7 +176,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const url = URL.createObjectURL(file);
 
         preview.src = url;
-
         preview.style.display = 'block';
 
         preview.onload = () => URL.revokeObjectURL(url);

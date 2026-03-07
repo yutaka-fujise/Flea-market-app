@@ -31,7 +31,7 @@
 }
 
 .search input {
-    width: 100%;
+    width: 400px;
     max-width: 520px;
     /* ←PC幅で伸びすぎ防止 */
     height: 38px;

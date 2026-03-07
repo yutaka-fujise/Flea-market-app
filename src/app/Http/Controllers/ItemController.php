@@ -139,7 +139,7 @@ class ItemController extends Controller
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'brand' => ['required', 'string', 'max:255'],
-            'description' => ['required', 'string'],
+            'description' => ['required', 'string', 'max:255'],
             'price' => ['required', 'integer', 'min:1'],
             'condition_id' => ['required', 'exists:conditions,id'],
 
