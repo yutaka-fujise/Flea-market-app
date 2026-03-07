@@ -15,15 +15,16 @@
     @if ($errors->any())
         <div class="sell-errors">
             <ul>
-                @foreach ($errors->all() as $error)
-                    <li>
-                        {{ $error }}
-                    </li>
+                @foreach (['image', 'categories', 'name', 'brand', 'description', 'price'] as $field)
+                    @foreach ($errors->get($field) as $error)
+                        <li>
+                            {{ $error }}
+                        </li>
+                    @endforeach
                 @endforeach
             </ul>
         </div>
     @endif
-
 
     <form
         action="{{ route('sell.store') }}"
@@ -32,7 +33,6 @@
         class="sell-form"
     >
         @csrf
-
 
         {{-- 画像 --}}
         <div class="sell-section">
@@ -52,7 +52,6 @@
         </div>
 
         <hr class="sell-hr">
-
 
         {{-- カテゴリー（複数選択） --}}
         <div class="sell-section">
@@ -86,7 +85,6 @@
 
         </div>
 
-
         {{-- 商品状態（プルダウン） --}}
         <div class="sell-section">
 
@@ -114,7 +112,6 @@
 
         </div>
 
-
         {{-- 詳細 --}}
         <div class="sell-section">
 
@@ -131,7 +128,6 @@
 
         </div>
 
-
         <div class="sell-section">
 
             <label class="sell-label">
@@ -147,7 +143,6 @@
 
         </div>
 
-
         <div class="sell-section">
 
             <label class="sell-label">
@@ -160,7 +155,6 @@
             >{{ old('description') }}</textarea>
 
         </div>
-
 
         <div class="sell-section">
 
@@ -177,7 +171,6 @@
                 <input
                     type="number"
                     name="price"
-                    min="1"
                     step="1"
                     value="{{ old('price') }}"
                     class="sell-input"
@@ -186,7 +179,6 @@
             </div>
 
         </div>
-
 
         <button
             type="submit"
