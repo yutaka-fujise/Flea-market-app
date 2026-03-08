@@ -32,7 +32,7 @@ no matching manifest for linux/arm64/v8 in the manifest list entries
 その際は docker-compose.yml の mysql サービスに
 以下の記述を追加してください。
 
-```bash
+```yaml
 mysql:
   platform: linux/x86_64
   image: mysql:8.0.26
@@ -67,31 +67,32 @@ DB_USERNAME=laravel_user
 DB_PASSWORD=laravel_pass
 ```
 
-5.アプリケーションキーの作成
+5.アプリケーションキー作成と権限設定
 
 ```bash
 php artisan key:generate
+
+# Laravelが書き込みを行うディレクトリの権限設定
+chmod -R 777 storage bootstrap/cache
+
+# 商品画像保存用ディレクトリ作成
+mkdir -p storage/app/public/items
+chmod -R 777 storage/app/public
 ```
 
-6.マイグレーションの実行
+6.マイグレーションとシーディングの実行
 
 ```bash
-php artisan migrate
+php artisan migrate --seed
 ```
 
-7.シーディングの実行
-
-```bash
-php artisan db:seed
-```
-
-8.シンボリックリンク作成
+7.シンボリックリンク作成
 
 ```bash
 php artisan storage:link
 ```
 
-9.Stripe 設定（購入機能）
+8.Stripe 設定（購入機能）
 
 Stripe を使用した決済機能があります。
 .env に以下を設定してください。
@@ -106,20 +107,14 @@ Stripe テストカード
 4242 4242 4242 4242
 ```
 
-## トラブルシュート
-
-storage/logs の権限エラーが発生した場合は以下を実行してください。
-
-```bash
-chmod -R 777 storage bootstrap/cache
-```
-
 ## 使用技術（実行環境）
 
 - PHP 8.x
 - Laravel 10.x
 - MySQL 8.0
 - Docker / Docker Compose
+- Laravel Fortify
+- Stripe Checkout
 
 ## 機能一覧
 
