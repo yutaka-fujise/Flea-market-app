@@ -81,6 +81,8 @@ chmod -R 777 storage bootstrap/cache
 商品画像保存用ディレクトリ作成
 ```bash
 mkdir -p storage/app/public/items
+```
+```bash
 chmod -R 777 storage/app/public
 ```
 
