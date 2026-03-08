@@ -71,11 +71,15 @@ DB_PASSWORD=laravel_pass
 
 ```bash
 php artisan key:generate
+```
 
 # Laravelが書き込みを行うディレクトリの権限設定
+```bash
 chmod -R 777 storage bootstrap/cache
+```
 
 # 商品画像保存用ディレクトリ作成
+```bash
 mkdir -p storage/app/public/items
 chmod -R 777 storage/app/public
 ```
