@@ -58,6 +58,12 @@ composer install
 cp .env.example .env
 ```
 
+環境によっては .env ファイル編集時に権限エラーが発生する場合があります。
+その場合は以下を実行してください。
+```bash
+chmod 666 .env
+```
+
 4. .env のデータベース設定を確認してください
 ```env
 DB_HOST=mysql
