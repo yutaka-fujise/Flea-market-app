@@ -161,5 +161,5 @@ Stripe テストカード
 
 ・Docker 環境下での再現性を重視した構成としています。
 
-・模擬案件の機能要件等のスプレッドシート
+・模擬案件の機能要件等のスプレッドシート：
 https://docs.google.com/spreadsheets/d/1OMHE-XLXVo0V99Ws5XlLwZ3zTcRgfJHEWecwW41gmO0/edit?gid=1188247583#gid=1188247583
